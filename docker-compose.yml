@@ -1,0 +1,73 @@
+services:
+  postgres:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_USER: atmosphere
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-atmosphere}
+      POSTGRES_DB: atmosphere
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U atmosphere -d atmosphere"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+    networks: [atmosphere]
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://atmosphere:${POSTGRES_PASSWORD:-atmosphere}@postgres:5432/atmosphere
+      CORS_ORIGINS: http://localhost:3000
+      SCHEDULER_ENABLED: "true"
+      # Trust forwarded client addresses only from this stack's private network.
+      FORWARDED_ALLOW_IPS: ${ATMOSPHERE_NETWORK_SUBNET:-172.30.81.0/24}
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - model_artifacts:/app/artifacts
+      - collected_files:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health',timeout=5)"]
+      interval: 20s
+      timeout: 8s
+      start_period: 30s
+      retries: 5
+    restart: unless-stopped
+    networks: [atmosphere]
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        BACKEND_URL: http://backend:8000
+    environment:
+      BACKEND_URL: http://backend:8000
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 8s
+      retries: 5
+    restart: unless-stopped
+    networks: [atmosphere]
+volumes:
+  postgres_data:
+  model_artifacts:
+  collected_files:
+networks:
+  atmosphere:
+    ipam:
+      config:
+        - subnet: ${ATMOSPHERE_NETWORK_SUBNET:-172.30.81.0/24}
