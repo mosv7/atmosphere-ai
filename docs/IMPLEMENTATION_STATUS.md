@@ -89,6 +89,21 @@ Regression tests cover the state/inference defects; scoped independent re-review
 
 ## Practical limits
 
-See `docs/LIMITATIONS.md`. Public internet hosting was not performed. CI configuration is supplied but no remote CI run is claimed. No Git remote is configured, so no push or PR was possible. External provider/tiles availability, commercial API licensing, uncertainty calibration, broader geographic evaluation, and multi-worker operational hardening remain explicit deployment/scientific limitations.
+See `docs/LIMITATIONS.md` and the feature follow-ups below. Public internet hosting was not performed. The private GitHub repository is https://github.com/mosv7/atmosphere-ai; the delivery branch is `codex/build-atmosphere-ai`. GitHub Actions reports verification for each pushed commit; consult its run status rather than assuming a passing remote run from the local results above. External provider/tiles availability, commercial API licensing, uncertainty calibration, broader geographic evaluation, and multi-worker operational hardening remain explicit deployment/scientific limitations.
+
+## Remaining features and follow-ups
+
+The eight screens and core PM2.5 forecasting flow are implemented, but this is not a claim that every enhancement in the original brief is implemented.
+
+- **Prediction uncertainty:** calibrated horizon-specific intervals and independent coverage evaluation remain unimplemented. The UI explains their omission, as allowed by the brief.
+- **Secondary outputs:** PM10 forecasts, a documented AQI/sub-index calculation and forecasting, and pollution severity classification are not implemented. The brief prioritizes reliable PM2.5 forecasts over these secondary targets.
+- **Geographic coverage:** worldwide search/current data work; forecasts are restricted to seven training cities. Extending forecast coverage requires additional collection, training and evaluation. Nairobi remains held out.
+- **Weather data exploration:** current weather is shown on City intelligence, but Data explorer does not yet expose weather-variable inventories, weather sample records or weather missingness alongside pollution data.
+- **Explainability:** global permutation importance is implemented; SHAP and individual prediction explanations are not. SHAP was conditional in the brief.
+- **Forecast inputs:** weather-informed forecasting is not implemented. The pollution/calendar/geography model is an explicitly permitted initial approach; adding weather requires a valid historical availability strategy.
+- **Public deployment and operation:** no hosted public application, shared multi-worker rate limiting/scheduler coordination, or production monitoring has been deployed. Docker and local startup are implemented.
+- **Evaluation limits:** retrospective archive tests do not establish original issue-time data availability. Station-based validation and prospective operational evaluation remain future work.
+
+Pre-upload verification was rerun successfully: 25 backend/ML tests, 14 frontend tests, frontend lint and TypeScript checks. Model artifacts and datasets remain outside Git; a clean clone must run the documented collection and training commands.
 
 Nonfatal tooling notices include the Starlette/httpx TestClient deprecation, a future Vite config-loader notice, and a Next.js standalone-output warning when native `next start` is used. Native production browser journeys passed; Docker uses the generated standalone server entry directly. No remaining executed test or build failure is hidden.
