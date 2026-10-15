@@ -1,0 +1,13 @@
+.venv/
+node_modules/
+.next/
+__pycache__/
+.pytest_cache/
+.env
+*.log
+.superpowers/
+backend/data/
+backend/artifacts/
+test-results/
+playwright-report/
+.runtime/
