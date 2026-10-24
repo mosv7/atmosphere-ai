@@ -74,8 +74,10 @@ For live browser journeys, first start the backend/frontend, collect data and tr
 
 ## Architecture and documentation
 
+- [Project proposal in English (PDF)](deliverables/project-proposal/Atmosphere-AI-Project-Proposal-EN.pdf)
+- [Project proposal in English (Markdown)](deliverables/project-proposal/Atmosphere-AI-Project-Proposal-EN.md)
 - [Project proposal in Arabic (PDF)](deliverables/project-proposal/Atmosphere-AI-Project-Proposal.pdf)
-- [Editable project proposal (Markdown)](deliverables/project-proposal/Atmosphere-AI-Project-Proposal.md)
+- [Project proposal in Arabic (Markdown)](deliverables/project-proposal/Atmosphere-AI-Project-Proposal.md)
 
 The browser calls same-origin `/api`, Next.js forwards to FastAPI, and PostgreSQL persists estimates, jobs, model registrations and forecast runs. Offline training produces immutable versioned joblib artifacts and saved evaluation predictions. A single-worker scheduler refreshes configured cities. [Architecture](docs/ARCHITECTURE.md) explains the boundaries.
 
