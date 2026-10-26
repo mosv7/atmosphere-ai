@@ -2,7 +2,7 @@
 
 Air quality analysis and hourly fine particulate matter forecasting
 
-Issue date: 25 October 2026 | Version 1.0 | English edition
+Issue date: 26 October 2026 | Version 1.1 | English edition
 
 ### Executive summary
 
@@ -10,11 +10,13 @@ Atmosphere AI is a proposed web platform that brings together air quality data, 
 
 This proposal builds on an implemented prototype connecting a user interface, backend service, database and reproducible training pipeline. It defines the product scope, initial feasibility evidence and a proposed plan to improve evaluation, coverage and operation. Reported results come from the documented experiment of 15 October 2026; they are not a fresh measurement of system performance on the proposal date.
 
-### Problem and rationale
+### Problem statement
 
-A single pollutant concentration does not provide enough context to understand air quality. Users need its source and timestamp, the direction of change, data availability and forecasts they can evaluate. Presenting these elements across disconnected pages or unclear formats makes comparison and monitoring harder.
+Air quality information is often presented as isolated readings or spread across sources and pages. Users struggle to connect a concentration with its timestamp and recent trend, or understand whether pollution may rise over the next three days. Researchers also need traceable data and an inspectable comparison between predictions and baselines. The specific problem is the lack of context, traceability and evaluable forecasting within one experience.
 
-The project addresses this need through a unified experience that connects current readings, history and forecasts with source information and coverage limits. Its intended value is better understanding of environmental data and an inspectable educational and research workflow. It does not provide official health alerts or medical advice.
+### Why it matters
+
+Combining readings, provenance, history and forecasts can help people understand changes and make more informed plans for outdoor activity. Students and researchers can study environmental data and evaluate forecasting models through a reproducible workflow. These are intended benefits to validate with users, not demonstrated reductions in pollution exposure. The platform does not provide official health alerts or medical advice.
 
 ### Objectives
 
@@ -23,6 +25,33 @@ The project addresses this need through a unified experience that connects curre
 - Compare classical machine learning algorithms against simple baselines using chronological splits that prevent target overlap.
 - Provide maps, charts and city comparisons alongside tools for inspecting data quality and model performance.
 - Establish a reproducible foundation for further development, clearly distinguishing implemented functions from proposed improvements.
+
+## Target users and team roles
+
+### Target users
+
+| User group | Need | Platform response |
+| --- | --- | --- |
+| Residents and commuters | Understand changing air conditions and plan outdoor activities | City search, timestamped readings, history and forecasts for supported locations |
+| Students and researchers | Inspect data, compare models and understand evaluation limits | Documented sources, coverage, missingness, metrics and training settings |
+| Environmental analysts and educators | Compare cities and explain trends with visible data-quality context | Explorable charts and comparisons across two to five cities |
+
+### Team roles and responsibilities
+
+The following is a proposed allocation of responsibilities. One person may cover multiple roles. Assignments will be made when the phase begins; this proposal assumes neither named members nor a fixed team size.
+
+| Role | Main responsibility | Owned deliverable |
+| --- | --- | --- |
+| Project coordinator | Set priorities and scope, track milestones and coordinate handover | Work plan, acceptance checklist and progress report |
+| Data engineer | Collect data, validate timestamps, missingness and provenance, and preserve snapshots | Documented dataset snapshot and quality report |
+| ML engineer | Prepare features, train models and baselines, evaluate and calibrate | Versioned model and reproducible evaluation report |
+| Frontend developer | Implement city journeys, charts, comparisons, forecasts and mobile layouts | Connected screens with clear loading and error states |
+| Backend and operations developer | Own APIs, persistence, scheduling, deployment and backups | Reliable service and operating and recovery plan |
+| QA and documentation owner | Test complete flows and review claims, documentation and usability | Acceptance evidence and user documentation |
+
+### Coordination and handoffs
+
+The data engineer supplies a fixed snapshot to the ML engineer, who supplies the model and input/output contract to the backend developer. The frontend developer connects this data to the user journey. QA checks the complete flow before the coordinator accepts the deliverable. Acceptance review includes gathering primary-user feedback on city selection, timestamps and the distinction between history and forecasts.
 
 ## Solution scope and technical architecture
 
@@ -80,16 +109,16 @@ Evaluation uses retrospectively retrieved archives without verified historical p
 
 ## Development plan resources and risks
 
-### Proposed prototype completion plan
+### Proposed implementation plan
 
-The following plan proposes four weeks of work on the existing prototype. Durations are planning estimates beginning after scope approval and availability of data and resources, not an agreed delivery commitment. Extended operational evaluation or integration with new monitoring stations may require more time.
+This proposed four-week plan extends the existing prototype. Durations are estimates starting after scope approval and resource availability, not a delivery commitment. Extended operational evaluation or integration with new monitoring stations may take longer.
 
-| Proposed period | Work | Reviewable output |
-| --- | --- | --- |
-| Week 1 | Freeze a data snapshot, document source availability and review reproducibility | Data-quality report and repeatable setup steps |
-| Week 2 | Evaluate additional cities and errors by horizon and concentration | Evidence identifying where coverage can expand |
-| Week 3 | Trial prediction-interval calibration and improve weather-data exploration | Interval-coverage report and targeted UI improvements |
-| Week 4 | Prepare a pilot deployment, monitoring, backups and handover | Pilot environment, acceptance report and operating plan |
+| Period | Work | Owner | Phase output |
+| --- | --- | --- | --- |
+| Week 1 | Freeze data; check quality and reproducibility | Data engineer and QA | Dataset snapshot and quality report |
+| Week 2 | Evaluate cities, horizons and concentration bands | ML engineer | Evidence-based coverage decision |
+| Week 3 | Trial interval calibration and weather-data exploration | ML engineer and frontend developer | Coverage report and UI improvements |
+| Week 4 | Pilot deployment, monitoring and backups | Backend/operations developer and QA | Pilot environment and acceptance report |
 
 ### Resources and cost
 
