@@ -6,6 +6,23 @@ Environmental values are **model-derived estimates, not station measurements**. 
 
 ## Run
 
+On Windows with Python 3.13, Node.js and PostgreSQL 18 installed, double-click
+`Run-App.cmd` in the project folder, or run:
+
+```powershell
+.\Run-App.cmd
+```
+
+The launcher installs missing local dependencies, starts the project's PostgreSQL
+cluster, API and frontend, waits for readiness, then opens the browser. The first
+run may take longer while dependencies install and the frontend builds. Logs are
+saved in `.runtime`. Existing data and trained models are reused; collection and
+training remain separate tasks as described below.
+
+Use `.\Run-App.cmd -BuildFrontend` to rebuild after frontend changes,
+`-Install` to reinstall dependencies, `-NoBrowser` to skip opening the browser,
+or `-PostgresBin "C:\path\to\PostgreSQL\bin"` for another PostgreSQL installation.
+
 With Docker Desktop's Linux engine running, from this directory:
 
 ```powershell
